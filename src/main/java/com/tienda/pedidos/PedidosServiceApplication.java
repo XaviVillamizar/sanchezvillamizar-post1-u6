@@ -1,4 +1,4 @@
-package com.tienda.pedidos_service;
+package com.tienda.pedidos;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
