@@ -20,4 +20,12 @@ public class ContextoPedido {
     public boolean isRechazado() { return rechazado; }
     public String getMotivoRechazo() { return motivoRechazo; }
     public void rechazar(String motivo) { this.rechazado = true; this.motivoRechazo = motivo; }
+
+        private double descuentoCampana = 0;
+
+    public double getDescuentoCampana() { return descuentoCampana; }
+
+    public void aplicarDescuentoCampana(double valor) {
+        if (valor > this.descuentoCampana) this.descuentoCampana = valor;
+    }
 }
