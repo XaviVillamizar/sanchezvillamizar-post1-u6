@@ -28,7 +28,6 @@ class GestorPedidosTest {
 
     @Test
     void stockInsuficienteRechazaElPedido() {
-        // El producto 3 solo tiene 2 unidades en inventario
         ResultadoPedido r = gestor.procesarPedido(pedido(1L, new ItemPedido(3L, 10)));
         assertFalse(r.isConfirmado());
         assertTrue(r.getMotivoRechazo().contains("Stock insuficiente"));
@@ -36,8 +35,8 @@ class GestorPedidosTest {
 
     @Test
     void clienteInexistenteSeRechaza() {
-        // Un cliente que no existe hace que queryForObject lance EmptyResultDataAccessException
-        // en el codigo original, porque no maneja ese caso. Es un defecto del codigo de partida.
+        // El codigo original no maneja este caso: queryForObject lanza
+        // EmptyResultDataAccessException cuando el cliente no existe.
         assertThrows(Exception.class,
                 () -> gestor.procesarPedido(pedido(999L, new ItemPedido(1L, 1))));
     }
@@ -55,7 +54,6 @@ class GestorPedidosTest {
 
     @Test
     void clienteVipConSubtotalAltoRecibeDescuentoDel15() {
-        // 2 x 600.000 = 1.200.000 -> VIP > 1.000.000 -> 15%
         ResultadoPedido r = gestor.procesarPedido(pedido(1L, new ItemPedido(2L, 2)));
         assertTrue(r.isConfirmado());
         double esperado = (1_200_000 - 1_200_000 * 0.15) * 1.19;
@@ -64,7 +62,6 @@ class GestorPedidosTest {
 
     @Test
     void clienteFrecuenteSinHistorialNoRecibeDescuento() {
-        // Sin pedidos previos el descuento es 0
         ResultadoPedido r = gestor.procesarPedido(pedido(2L, new ItemPedido(1L, 1)));
         assertTrue(r.isConfirmado());
         assertEquals(100_000 * 1.19, r.getTotal(), 0.01);
